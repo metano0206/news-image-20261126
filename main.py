@@ -9,11 +9,9 @@ Pure Python standard library: the page is rasterised by hand into an RGB
 buffer and encoded as a PNG with zlib, so two runs always produce the
 same bytes.
 
-NOTE ON THE NEWS DATA: the stories in the NEWS DATA block below are a
-stand-in assembled from the main headlines of 24 November 2026. They hold
-the layout while the page is built; in the final pass, before the last
-submission, the whole block is swapped for the verified news of
-26 November 2026.
+NOTE ON THE NEWS DATA: the stories in the NEWS DATA block below are the
+verified headlines of 26 November 2026, each checked against at least
+two major outlets (Reuters, AP, Al Jazeera, CNN, Yonhap, ONS).
 """
 
 import math
@@ -22,7 +20,8 @@ import struct
 import zlib
 
 # --------------------------------------------------------------------------
-# NEWS DATA (placeholder: 24 November 2026 headlines - swap for 26 Nov final)
+# NEWS DATA (verified: Thursday 26 November 2026, each story checked
+# against at least two major outlets - Reuters, AP, Al Jazeera, CNN)
 # --------------------------------------------------------------------------
 
 PAPER_NAME = "THE DAILY ORBIT"
@@ -32,44 +31,45 @@ TAG_LINE = "ONE PAGE - ONE DAY"
 
 LEAD = {
     "kicker": "EUROPE - WAR IN UKRAINE",
-    "headline": "RUSSIAN STRIKES KILL AT LEAST 14 NEAR KYIV",
-    "summary": "A FIVE-STOREY HOME COLLAPSED IN DYMER. RESCUERS KEPT "
-               "DIGGING THROUGH THE RUBBLE AS THE TOLL ROSE.",
+    "headline": "RUSSIAN MISSILES HIT KYIV MALL",
+    "summary": "SEVEN WOUNDED AS BALLISTIC MISSILES STRIKE A SHOPPING "
+               "CENTRE. 113 DRONES IN ONE NIGHT.",
 }
 
 PANELS = [
     {
-        "kicker": "BUSINESS - TECH",
+        "kicker": "BUSINESS - TRADE",
         "color": (14, 124, 102),
         "icon": "chip",
-        "headline": "NVIDIA REINSTATES HUANG AS CEO",
-        "summary": "BACK AT THE TOP JOB. SHARES LEAPT 31.5% IN A DAY.",
+        "headline": "TRUMP UNVEILS NEW TARIFFS ON 14 PARTNERS",
+        "summary": "CHINA FACES 20%. HEARING SET FOR JANUARY 25.",
     },
     {
-        "kicker": "CLIMATE",
+        "kicker": "MIDDLE EAST - GAZA",
         "color": (194, 81, 10),
         "icon": "globe",
-        "headline": "COP31 TALKS COLLAPSE, NO DEAL",
-        "summary": "THE EU REJECTED A FINAL TEXT THAT DROPPED FOSSIL FUELS.",
+        "headline": "ISRAELI STRIKES KILL NINE IN GAZA",
+        "summary": "DEPUTY EDUCATION MINISTER AMONG THE DEAD. "
+                   "THIRD NIGHT OF STRIKES.",
     },
     {
-        "kicker": "AMERICA",
+        "kicker": "ASIA - NORTH KOREA",
         "color": (91, 62, 153),
         "icon": "dome",
-        "headline": "DEMOCRATS WIN 258 HOUSE SEATS",
-        "summary": "THE BIGGEST MAJORITY SINCE 1992. THE SENATE FELL TOO.",
+        "headline": "KIM VOWS MORE NUCLEAR WEAPONS",
+        "summary": "TOURS URANIUM SITES, VOWS EXPANSION.",
     },
     {
-        "kicker": "ASIA - INDONESIA",
+        "kicker": "AFRICA - EGYPT",
         "color": (185, 122, 15),
         "icon": "factory",
-        "headline": "FACTORY FIRE KILLS AT LEAST 26",
-        "summary": "THE TOLL ROSE AT THE BANTEN CANDY FACTORY. 8 MISSING.",
+        "headline": "CAIRO TANKER FIRE KILLS AT LEAST 31",
+        "summary": "RING ROAD INFERNO ENGULFS 27 VEHICLES.",
     },
 ]
 
 TICKER_LABEL = "ALSO TODAY"
-TICKER_TEXT = "OREGON AND VIRGINIA SUE SPACEX OVER SEXUALISED GROK AI IMAGES"
+TICKER_TEXT = "UK NET MIGRATION 77,000, LOWEST SINCE 1997 | MACY'S 100TH PARADE MOVED TO SATURDAY"
 
 # --------------------------------------------------------------------------
 # Colours
@@ -434,8 +434,9 @@ def draw_scene(cv, x0, y0, x1, y1):
     for (dx, bw, bh) in far:
         cv.fill_rect(x0 + dx, y1 - 22 - bh, x0 + dx + bw, y1 - 22,
                      (30, 34, 58))
-    # explosion: a starburst over the middle-right of the skyline
-    ex, ey = x0 + int((x1 - x0) * 0.62), y0 + int(h * 0.40)
+    # explosion: a starburst over the middle of the skyline, set in a gap
+    # between the near blocks so most of it shows above the roofs
+    ex, ey = x0 + int((x1 - x0) * 0.52), y0 + int(h * 0.38)
     star = []
     for i in range(16):
         ang = math.pi * i / 8.0

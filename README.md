@@ -18,8 +18,7 @@ Run it:
 mkdir -p out && MAKEFUN_OUTPUT_DIR=out python3.13 main.py
 ```
 
-The news data at the top of `main.py` is a clearly marked stand-in while the
-page is built; it is swapped for the verified news of 26 November 2026 in the
-final pass before the last submission.
+The news data at the top of `main.py` is the verified news of 26 November
+2026, each story checked against at least two major outlets.
 
 Licensed under the MIT License (see `LICENSE`).
